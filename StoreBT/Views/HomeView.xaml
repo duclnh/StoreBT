@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="StoreBT.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1250">
+
+    <Grid>
+        <!-- Icon chính giữa -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+
+            <!-- Sản phẩm -->
+            <Border MouseLeftButtonUp="Product_Click" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#DBEAFE" CornerRadius="12" Width="120" Height="120"
+                    Cursor="Hand" Margin="0,0,40,0">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE719;" FontSize="40" Foreground="#1E40AF" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Sản phẩm" FontSize="14" Foreground="#1E3A8A" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Đơn hàng -->
+            <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#E0F2FE" CornerRadius="12" Width="120" Height="120"
+                    Cursor="Hand" Margin="0,0,40,0">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7C3;" FontSize="40" Foreground="#075985" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Đơn hàng" FontSize="14" Foreground="#0C4A6E" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Đồng bộ -->
+            <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#FEF9C3" CornerRadius="12" Width="120" Height="120"
+                    Cursor="Hand" Margin="0,0,40,0">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE895;" FontSize="40" Foreground="#92400E" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Đồng bộ" FontSize="14" Foreground="#78350F" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Khách hàng -->
+            <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#F3E8FF" CornerRadius="12" Width="120" Height="120"
+                    Cursor="Hand">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE716;" FontSize="40" Foreground="#6B21A8" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Khách hàng" FontSize="14" Foreground="#581C87" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- 🕒 Thời gian góc dưới phải -->
+        <TextBlock x:Name="txtTimeContent"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   FontSize="25"
+                   Foreground="#334155"
+                   Margin="10,0,0,0"
+                   Text="--:--:-- - --/--/----" Height="35" Width="314"/>
+    </Grid>
+</UserControl>
