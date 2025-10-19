@@ -24,3 +24,15 @@ C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\Prod
 C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\ProductView.g.cs
 C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Resources\Styles.baml
 C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\App.baml
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\StoreBT.sourcelink.json
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\bin\Debug\net8.0-windows\Assets\Icons\scan.png
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\bin\Debug\net8.0-windows\Assets\Icons\search.png
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\StoreBT_Content.g.cs
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\bin\Debug\net8.0-windows\Assets\Icons\edit.png
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\bin\Debug\net8.0-windows\Assets\Icons\delete.png
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\CustomerView.baml
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\CustomerView.g.cs
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\OrderView.g.cs
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\OrderView.baml
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\CreateOrderView.baml
+C:\Users\duclnh\source\repos\StoreBT\StoreBT\obj\Debug\net8.0-windows\Views\CreateOrderView.g.cs

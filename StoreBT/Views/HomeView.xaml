@@ -20,7 +20,7 @@
             </Border>
 
             <!-- Đơn hàng -->
-            <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#E0F2FE" CornerRadius="12" Width="120" Height="120"
+            <Border PreviewMouseLeftButtonDown="Order_Click" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#E0F2FE" CornerRadius="12" Width="120" Height="120"
                     Cursor="Hand" Margin="0,0,40,0">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7C3;" FontSize="40" Foreground="#075985" HorizontalAlignment="Center"/>
@@ -38,7 +38,7 @@
             </Border>
 
             <!-- Khách hàng -->
-            <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#F3E8FF" CornerRadius="12" Width="120" Height="120"
+            <Border  MouseLeftButtonUp="Customer_Click" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" Background="#F3E8FF" CornerRadius="12" Width="120" Height="120"
                     Cursor="Hand">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE716;" FontSize="40" Foreground="#6B21A8" HorizontalAlignment="Center"/>
@@ -47,7 +47,7 @@
             </Border>
         </StackPanel>
 
-        <!-- 🕒 Thời gian góc dưới phải -->
+        <!-- 🕒 Thời gian góc trên-->
         <TextBlock x:Name="txtTimeContent"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\duclnh\source\repos\StoreBT\StoreBT\App.xaml
-4988662278
-
-10335824042
+7-372606133
+4-1400409055
+221525139933
 198-1246917944
-MainWindow.xaml;Resources\Styles.xaml;Views\HomeView.xaml;Views\ProductView.xaml;
+MainWindow.xaml;Resources\Styles.xaml;Views\CreateOrderView.xaml;Views\CustomerView.xaml;Views\HomeView.xaml;Views\OrderView.xaml;Views\ProductView.xaml;
 
 False
 

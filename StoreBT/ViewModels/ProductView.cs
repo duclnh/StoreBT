@@ -38,12 +38,12 @@ namespace StoreBT.Views
 
         private void AddProduct_Click(object sender, RoutedEventArgs e)
         {
-            PopupOverlay.Visibility = Visibility.Visible;
+            ProductPopup.IsOpen = true;
         }
 
         private void CancelPopup_Click(object sender, RoutedEventArgs e)
         {
-            PopupOverlay.Visibility = Visibility.Collapsed;
+            ProductPopup.IsOpen = false;
         }
 
         private async void SaveProduct_Click(object sender, RoutedEventArgs e)
@@ -62,7 +62,7 @@ namespace StoreBT.Views
 
                 await _productService.AddAsync(product);
                 await LoadProduct(); // refresh lại datagrid
-                PopupOverlay.Visibility = Visibility.Collapsed;
+                ProductPopup.IsOpen = false;
 
                 MessageBox.Show("Đã thêm sản phẩm thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -76,6 +76,43 @@ namespace StoreBT.Views
         {
             MessageBox.Show("Mở chức năng quét mã vạch ở đây!");
             // TODO: thêm logic quét mã vạch thật (nếu có)
+        }
+
+
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var keyword = txtSearch.Text.Trim().ToLower();
+
+            //if (ProductGrid.ItemsSource is IEnumerable<Product> products)
+            //{
+
+            //}
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var product = button?.DataContext as Product;
+            if (product != null)
+            {
+                MessageBox.Show($"Sửa sản phẩm: {product.Name}");
+                // TODO: Mở popup sửa sản phẩm
+            }
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var product = button?.DataContext as Product;
+            if (product != null)
+            {
+                if (MessageBox.Show($"Bạn có chắc muốn xóa '{product.Name}'?", "Xác nhận xóa",
+                                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    _productService.DeleteAsync(product.Barcode);
+                    ProductGrid.Items.Refresh();
+                }
+            }
         }
 
     }

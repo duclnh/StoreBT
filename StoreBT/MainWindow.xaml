@@ -8,7 +8,7 @@
         Background="Transparent">
 
     <!-- Viền ngoài -->
-    <Border CornerRadius="15" Background="White" BorderBrush="#ddd" BorderThickness="1">
+    <Border CornerRadius="15,15,0,0" Background="White" BorderBrush="#ddd" BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -20,7 +20,7 @@
                     Background="#2563EB"
                     CornerRadius="15,15,0,0"
                     Height="40"
-                    MouseDown="Header_MouseDown">
+                    MouseDown="Header_MouseDown" Panel.ZIndex="10">
 
                 <DockPanel LastChildFill="False">
                     <TextBlock Text="🛍️  Quản lí cửa hàng"
@@ -46,7 +46,7 @@
             </Border>
 
             <!-- ========== NỘI DUNG ========== -->
-            <Border Grid.Row="1" Background="#f9fafb" CornerRadius="0,0,15,15">
+            <Border Grid.Row="1" Background="#f9fafb" ClipToBounds="True">
                 <!-- Hiển thị UserControl HomeView -->
                 <ContentControl Content="{Binding CurrentView}"/>
             </Border>

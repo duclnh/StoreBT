@@ -11,13 +11,13 @@ namespace StoreBT.Views
         public HomeView()
         {
             InitializeComponent();
-
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += (s, e) =>
             {
                 txtTimeContent.Text = DateTime.Now.ToString("HH:mm:ss - dd/MM/yyyy");
             };
             _timer.Start();
+
         }
 
         private void Border_MouseEnter(object sender, MouseEventArgs e)
@@ -39,5 +39,21 @@ namespace StoreBT.Views
                 main.MainVM.CurrentView = new ProductView();
             }
         }
+        private void Customer_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (Application.Current.MainWindow is MainWindow main)
+            {
+                main.MainVM.CurrentView = new CustomerView();
+            }
+        }
+
+        private void Order_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (Application.Current.MainWindow is MainWindow main)
+            {
+                main.MainVM.CurrentView = new OrderView();
+            }
+        }
+
     }
 }
