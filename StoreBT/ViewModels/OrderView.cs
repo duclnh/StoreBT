@@ -1,4 +1,5 @@
-﻿using StoreBT.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StoreBT.Models;
 using StoreBT.Services;
 using StoreBT.Services.Interfaces;
 using System;
@@ -76,7 +77,8 @@ namespace StoreBT.Views
 
             if (Application.Current.MainWindow is MainWindow main)
             {
-                main.MainVM.CurrentView = new CreateOrderView();
+                var createOrderView = App.Services.GetRequiredService<CreateOrderView>();
+                main.MainVM.CurrentView = createOrderView;
             }
 
         }

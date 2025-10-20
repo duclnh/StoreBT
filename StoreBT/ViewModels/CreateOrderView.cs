@@ -17,10 +17,10 @@ namespace StoreBT.Views
         private List<Customer> _customers = new();
         private readonly IProductService _productService;
         private readonly ICustomerService _customerService; 
-        public CreateOrderView()
+        public CreateOrderView(ICustomerService customerService)
         {
             _productService = new ProductService();
-            _customerService = new CustomerService();
+            _customerService = customerService; 
             InitializeComponent();
             LoadProducts();
             LoadCustomers();

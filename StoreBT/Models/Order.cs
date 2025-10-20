@@ -1,7 +1,12 @@
-﻿namespace StoreBT.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StoreBT.Models
 {
+    [Table("Orders")]
     public class Order
     {
+        [Key]
         public Guid Id { get; set; } = Guid.NewGuid();      // Mã đơn hàng (tự sinh)
         public string OrderCode { get; set; } = "DH" + DateTime.Now.ToString("yyyyMMddHHmmss");
         public Guid CustomerId { get; set; }                // Mã khách hàng (khóa ngoại)

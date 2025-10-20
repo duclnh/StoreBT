@@ -132,7 +132,7 @@ namespace StoreBT.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/StoreBT;component/views/productview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/StoreBT;V1.0.0.0;component/views/productview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\ProductView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

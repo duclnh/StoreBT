@@ -1,6 +1,7 @@
 ﻿using StoreBT.Models;
 using StoreBT.Services;
 using StoreBT.Services.Interfaces;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,12 +12,17 @@ namespace StoreBT.Views
     public partial class CustomerView : UserControl
     {
         private readonly ICustomerService _customerService;
-        public CustomerView()
+
+
+        private Customer? CustomerSelected = null;
+
+        public CustomerView(ICustomerService customerService)
         {
             InitializeComponent();
-            _customerService = new CustomerService();
-            this.Loaded += CustomerView_Loaded;
+            _customerService = customerService;
+            Loaded += CustomerView_Loaded;
         }
+
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
@@ -30,16 +36,22 @@ namespace StoreBT.Views
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
             CustomerPopup.IsOpen = true;
+            txtName.Text = "";
+            txtPhone.Text = "";
+            txtAddress.Text = "";
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var product = button?.DataContext as Product;
-            if (product != null)
+            var customer = button?.DataContext as Customer;
+            if (customer != null)
             {
-                MessageBox.Show($"Sửa khách hàng: {product.Name}");
-                // TODO: Mở popup sửa sản phẩm
+                CustomerSelected = customer;
+                CustomerPopup.IsOpen = true;
+                txtName.Text = customer.Name;
+                txtPhone.Text = customer.Phone; ;
+                txtAddress.Text = customer?.Address;
             }
         }
 
@@ -52,7 +64,7 @@ namespace StoreBT.Views
                 if (MessageBox.Show($"Bạn có chắc muốn xóa '{customer.Name}'?", "Xác nhận xóa",
                                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    _customerService.DeleteAsync(customer.Id);
+                    _customerService.DeleteAsync(customer);
                     CustomerGrid.Items.Refresh();
                 }
             }
@@ -88,18 +100,72 @@ namespace StoreBT.Views
         {
             try
             {
-                var customer = new Customer
+                string name = txtName.Text.Trim();
+                string phone = txtPhone.Text.Trim();
+                string address = txtAddress.Text.Trim();
+                if (string.IsNullOrWhiteSpace(name))
                 {
-                    Name = txtName.Text,
-                    Phone = txtPhone.Text,
-                    Address = txtAddress.Text,
-                };
+                    MessageBox.Show("Tên khách hàng không được để trống!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtName.Focus();
+                    return;
+                }
 
-                await _customerService.AddAsync(customer);
-                await LoadCustomer(); // refresh lại datagrid
-                CustomerPopup.IsOpen = false;
+                if (string.IsNullOrWhiteSpace(phone))
+                {
+                    MessageBox.Show("Số điện thoại không được để trống!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
 
-                MessageBox.Show("Đã thêm khách hàng thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (!System.Text.RegularExpressions.Regex.IsMatch(phone, @"^[0-9]{9,11}$"))
+                {
+                    MessageBox.Show("Số điện thoại không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(address))
+                {
+                    MessageBox.Show("Địa chỉ không được để trống!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtAddress.Focus();
+                    return;
+                }
+                if (CustomerSelected is null)
+                {
+                    var customer = new Customer
+                    {
+                        Name = name,
+                        Phone = phone,
+                        Address = address,
+                    };
+
+                    await _customerService.AddAsync(customer);
+                    await LoadCustomer();
+                    CustomerPopup.IsOpen = false;
+
+                    MessageBox.Show("Đã thêm khách hàng thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+
+                    CustomerSelected.Name = name;
+                    CustomerSelected.Phone = phone;
+                    CustomerSelected.Address = address;
+
+                    var result = await _customerService.UpdateAsync(CustomerSelected);
+                    if (result == 1)
+                    {
+                        await LoadCustomer();
+                        CustomerPopup.IsOpen = false;
+                        MessageBox.Show("Cập nhật khách hàng thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cập nhật khách hàng thất bại!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                CustomerSelected = null;
             }
             catch (Exception ex)
             {

@@ -5,8 +5,8 @@ namespace StoreBT.Services.Interfaces
     public interface ICustomerService
     {
         Task<IEnumerable<Customer>> GetAllAsync();
-        Task AddAsync(Customer Customer);
-        Task UpdateAsync(Customer Customer);
-        Task DeleteAsync(Guid Id);
+        Task<int> AddAsync(Customer Customer);
+        Task<int> UpdateAsync(Customer Customer);
+        Task<int> DeleteAsync(Customer Customer);
     }
 }

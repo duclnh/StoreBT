@@ -1,7 +1,12 @@
-﻿namespace StoreBT.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StoreBT.Models
 {
+    [Table("OrderItems")]
     public class OrderItem
     {
+        [Key]
         public Guid Id { get; set; } = Guid.NewGuid();          // Mã chi tiết đơn hàng
 
         public Guid OrderId { get; set; }                       // Khóa ngoại liên kết Order

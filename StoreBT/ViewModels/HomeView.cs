@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -43,7 +44,8 @@ namespace StoreBT.Views
         {
             if (Application.Current.MainWindow is MainWindow main)
             {
-                main.MainVM.CurrentView = new CustomerView();
+                var customerView = App.Services.GetRequiredService<CustomerView>();
+                main.MainVM.CurrentView = customerView;
             }
         }
 

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StoreBT.Models
 {
+    [Table("Products")]
     public class Product
     {
+        [Key]
         public Guid Id { get; set; } = Guid.NewGuid();      // Mã định danh duy nhất
         public string Name { get; set; } = string.Empty;     // Tên sản phẩm
         public string Category { get; set; } = string.Empty; // Loại sản phẩm
