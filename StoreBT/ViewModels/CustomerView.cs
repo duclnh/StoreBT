@@ -14,7 +14,7 @@ namespace StoreBT.Views
         private readonly ICustomerService _customerService;
 
 
-        private Customer? CustomerSelected = null;
+        private Customer? _customerSelected = null;
 
         public CustomerView(ICustomerService customerService)
         {
@@ -47,7 +47,7 @@ namespace StoreBT.Views
             var customer = button?.DataContext as Customer;
             if (customer != null)
             {
-                CustomerSelected = customer;
+                _customerSelected = customer;
                 CustomerPopup.IsOpen = true;
                 txtName.Text = customer.Name;
                 txtPhone.Text = customer.Phone; ;
@@ -55,7 +55,7 @@ namespace StoreBT.Views
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var customer = button?.DataContext as Customer;
@@ -64,20 +64,17 @@ namespace StoreBT.Views
                 if (MessageBox.Show($"Bạn có chắc muốn xóa '{customer.Name}'?", "Xác nhận xóa",
                                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    _customerService.DeleteAsync(customer);
-                    CustomerGrid.Items.Refresh();
+                    await _customerService.DeleteAsync(customer);
+                    await LoadCustomer();
                 }
             }
         }
 
-        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private async void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             var keyword = txtSearch.Text.Trim().ToLower();
 
-            //if (ProductGrid.ItemsSource is IEnumerable<Product> products)
-            //{
-
-            //}
+            CustomerGrid.ItemsSource = await _customerService.SearchAsync(keyword);
         }
 
         private async void CustomerView_Loaded(object sender, RoutedEventArgs e)
@@ -87,7 +84,7 @@ namespace StoreBT.Views
         private async Task LoadCustomer()
         {
 
-            CustomerGrid.ItemsSource = await _customerService.GetAllAsync();
+            CustomerGrid.ItemsSource = await _customerService.SearchAsync("");
         }
 
 
@@ -130,7 +127,7 @@ namespace StoreBT.Views
                     txtAddress.Focus();
                     return;
                 }
-                if (CustomerSelected is null)
+                if (_customerSelected is null)
                 {
                     var customer = new Customer
                     {
@@ -148,11 +145,11 @@ namespace StoreBT.Views
                 else
                 {
 
-                    CustomerSelected.Name = name;
-                    CustomerSelected.Phone = phone;
-                    CustomerSelected.Address = address;
+                    _customerSelected.Name = name;
+                    _customerSelected.Phone = phone;
+                    _customerSelected.Address = address;
 
-                    var result = await _customerService.UpdateAsync(CustomerSelected);
+                    var result = await _customerService.UpdateAsync(_customerSelected);
                     if (result == 1)
                     {
                         await LoadCustomer();
@@ -165,7 +162,7 @@ namespace StoreBT.Views
                         return;
                     }
                 }
-                CustomerSelected = null;
+                _customerSelected = null;
             }
             catch (Exception ex)
             {

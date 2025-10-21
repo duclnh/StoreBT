@@ -10,10 +10,11 @@ namespace StoreBT.Views
     public partial class ProductView : UserControl
     {
         private readonly IProductService _productService;
-        public ProductView()
+        private Product? _selectedProduct = null;
+        public ProductView(IProductService productService)
         {
             InitializeComponent();
-            _productService = new ProductService();
+            _productService = productService;   
               this.Loaded += ProductView_Loaded;
         }
 
@@ -28,16 +29,23 @@ namespace StoreBT.Views
 
         private async void ProductView_Loaded(object sender, RoutedEventArgs e)
         {
-            await LoadProduct();
+            await LoadProducts();
         }
-        private async Task LoadProduct()
+        private async Task LoadProducts()
         {
 
-            ProductGrid.ItemsSource = await _productService.GetAllAsync();
+            ProductGrid.ItemsSource = await _productService.SearchAsync("");
         }
 
         private void AddProduct_Click(object sender, RoutedEventArgs e)
         {
+            txtName.Text = "";
+            txtCategory.Text = "";
+            txtBarcode.Text = "";
+            txtPrice.Text = "";
+            txtStock.Text = "";
+            txtDescription.Text = "";
+
             ProductPopup.IsOpen = true;
         }
 
@@ -50,21 +58,66 @@ namespace StoreBT.Views
         {
             try
             {
-                var product = new Product
+
+                if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
-                    Name = txtName.Text,
-                    Category = txtCategory.Text,
-                    Barcode = txtBarcode.Text,
-                    Price = decimal.TryParse(txtPrice.Text, out var price) ? price : 0,
-                    Stock = int.TryParse(txtStock.Text, out var stock) ? stock : 0,
-                    Description = txtDescription.Text
-                };
+                    MessageBox.Show("Tên sản phẩm không được để trống!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtName.Focus();
+                    return;
+                }
 
-                await _productService.AddAsync(product);
-                await LoadProduct(); // refresh lại datagrid
+                if (string.IsNullOrWhiteSpace(txtCategory.Text))
+                {
+                    MessageBox.Show("Vui lòng nhập loại sản phẩm!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtCategory.Focus();
+                    return;
+                }
+
+                if (!decimal.TryParse(txtPrice.Text, out var price) || price < 0)
+                {
+                    MessageBox.Show("Giá sản phẩm không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtPrice.Focus();
+                    return;
+                }
+
+                if (!int.TryParse(txtStock.Text, out var stock) || stock < 0)
+                {
+                    MessageBox.Show("Số lượng tồn kho không hợp lệ!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtStock.Focus();
+                    return;
+                }
+                if (_selectedProduct == null)
+                {
+                    var product = new Product
+                    {
+                        Name = txtName.Text.Trim(),
+                        Category = txtCategory.Text.Trim(),
+                        Barcode = txtBarcode.Text.Trim(),
+                        Price = price,
+                        Stock = stock,
+                        Description = txtDescription.Text.Trim()
+                    };
+
+                    await _productService.AddAsync(product);
+                    MessageBox.Show("Đã thêm sản phẩm thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    _selectedProduct.Name = txtName.Text.Trim();
+                    _selectedProduct.Category = txtCategory.Text.Trim();
+                    _selectedProduct.Barcode = txtBarcode.Text.Trim();
+                    _selectedProduct.Price = price;
+                    _selectedProduct.Stock = stock;
+                    _selectedProduct.Description = txtDescription.Text.Trim();
+
+                    await _productService.UpdateAsync(_selectedProduct);
+                    MessageBox.Show("Đã cập nhật sản phẩm thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    _selectedProduct = null;
+                }
+
+                await LoadProducts();
                 ProductPopup.IsOpen = false;
-
-                MessageBox.Show("Đã thêm sản phẩm thành công!", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -79,14 +132,10 @@ namespace StoreBT.Views
         }
 
 
-        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private async void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             var keyword = txtSearch.Text.Trim().ToLower();
-
-            //if (ProductGrid.ItemsSource is IEnumerable<Product> products)
-            //{
-
-            //}
+            ProductGrid.ItemsSource = await _productService.SearchAsync(keyword);
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -95,12 +144,19 @@ namespace StoreBT.Views
             var product = button?.DataContext as Product;
             if (product != null)
             {
-                MessageBox.Show($"Sửa sản phẩm: {product.Name}");
-                // TODO: Mở popup sửa sản phẩm
+                txtName.Text = product.Name;
+                txtCategory.Text = product.Category;
+                txtBarcode.Text = product.Barcode;
+                txtPrice.Text = product.Price.ToString();
+                txtStock.Text = product.Stock.ToString();
+                txtDescription.Text = product.Description;
+                _selectedProduct = product;
+
+                ProductPopup.IsOpen = true;
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var product = button?.DataContext as Product;
@@ -109,8 +165,8 @@ namespace StoreBT.Views
                 if (MessageBox.Show($"Bạn có chắc muốn xóa '{product.Name}'?", "Xác nhận xóa",
                                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    _productService.DeleteAsync(product.Barcode);
-                    ProductGrid.Items.Refresh();
+                    await _productService.DeleteAsync(product);
+                    await LoadProducts();
                 }
             }
         }

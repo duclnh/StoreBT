@@ -12,46 +12,52 @@ namespace StoreBT.Views
 {
     public partial class CreateOrderView : UserControl
     {
-        private List<Product> _products = new();
         private List<OrderItem> _cart = new();
-        private List<Customer> _customers = new();
         private readonly IProductService _productService;
         private readonly ICustomerService _customerService; 
-        public CreateOrderView(ICustomerService customerService)
+        public CreateOrderView(ICustomerService customerService, IProductService productService)
         {
-            _productService = new ProductService();
-            _customerService = customerService; 
+            _productService = productService;
+            _customerService = customerService;
             InitializeComponent();
-            LoadProducts();
-            LoadCustomers();
+             this.Loaded += CreateOrderView_Loaded; 
+          
+        }
+
+
+        private async void CreateOrderView_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadProducts();
+            await LoadCustomers();
         }
 
         // =================== LOAD DỮ LIỆU ===================
-        private void LoadProducts()
+        private async Task LoadProducts()
         {
-            _products = _productService.GetAllAsync().Result.ToList();
-            ProductGrid.ItemsSource = _products;
+            ProductGrid.ItemsSource = await _productService.SearchAsync("");
         }
 
-        private void LoadCustomers()
+        private async Task LoadCustomers()
         {
-            _customers = _customerService.GetAllAsync().Result.ToList();
-            CustomerComboBox.ItemsSource = _customers;
-            CustomerComboBox.SelectedIndex = 0;
+            CustomerComboBox.ItemsSource = await _customerService.SearchAsync("");
         }
 
         // =================== SỰ KIỆN CHỌN KHÁCH HÀNG ===================
         private void CustomerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = CustomerComboBox.SelectedItem as Customer;
-            if (selected != null && selected.Id == Guid.Empty)
+            if (selected is not null)
             {
-                // Khi chọn “Nhập khách hàng mới”
-                NewCustomerPanel.Visibility = Visibility.Visible;
+                txtName.Text = selected.Name;
+                txtPhone.Text = selected.Phone;
+                txtAddress.Text = selected.Address;
+
             }
             else
             {
-                NewCustomerPanel.Visibility = Visibility.Collapsed;
+                txtName.Text = "";
+                txtPhone.Text = "";
+                txtAddress.Text = "";
             }
         }
 
@@ -88,6 +94,7 @@ namespace StoreBT.Views
                 _cart.Add(new OrderItem
                 {
                     ProductId = selected.Id,
+                    Product = selected,
                     UnitPrice = selected.Price,
                     Quantity = 1
                 });
@@ -124,7 +131,7 @@ namespace StoreBT.Views
             if (selectedCustomer.Id == Guid.Empty)
             {
                 // Tạo mới khách hàng
-                if (string.IsNullOrWhiteSpace(CustomerNameInput.Text))
+                if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
                     MessageBox.Show("Vui lòng nhập tên khách hàng mới.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -133,9 +140,9 @@ namespace StoreBT.Views
                 customer = new Customer
                 {
                     Id = Guid.NewGuid(),
-                    Name = CustomerNameInput.Text.Trim(),
-                    Phone = CustomerPhoneInput.Text.Trim(),
-                    Address = CustomerAddressInput.Text.Trim()
+                    Name = txtName.Text.Trim(),
+                    Phone = txtPhone.Text.Trim(),
+                    Address = txtAddress.Text.Trim()
                 };
             }
             else
@@ -167,9 +174,9 @@ namespace StoreBT.Views
             RefreshCart();
             DiscountInput.Text = "0";
             CustomerComboBox.SelectedIndex = 0;
-            CustomerNameInput.Text = "";
-            CustomerPhoneInput.Text = "";
-            CustomerAddressInput.Text = "";
+            txtName.Text = "";
+            txtPhone.Text = "";
+            txtAddress.Text = "";
         }
 
         // =================== QUAY LẠI ===================
@@ -182,14 +189,11 @@ namespace StoreBT.Views
             }
         }
 
-        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private async void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             var keyword = txtSearch.Text.Trim().ToLower();
 
-            //if (ProductGrid.ItemsSource is IEnumerable<Product> products)
-            //{
-
-            //}
+            ProductGrid.ItemsSource = await _productService.SearchAsync(keyword);
         }
 
         private void btnScanBarcode_Click(object sender, RoutedEventArgs e)

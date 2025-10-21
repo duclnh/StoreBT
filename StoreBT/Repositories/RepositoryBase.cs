@@ -36,7 +36,7 @@ namespace StoreBT.Repositories
             return await _dbSet.CountAsync(filterExpression, cancellationToken);
         }
 
-        public async Task<TEntity?> Find(
+        public async Task<TEntity?> FindAsync(
                 Expression<Func<TEntity, bool>> expression,
                 CancellationToken cancellationToken = default,
                 params Expression<Func<TEntity, object>>[] includes)
@@ -52,7 +52,7 @@ namespace StoreBT.Repositories
             return await query.AsNoTracking().FirstOrDefaultAsync(expression, cancellationToken);
         }
 
-        public async Task<IList<TEntity>> FindAll(
+        public async Task<IList<TEntity>> FindAllAsync(
             Expression<Func<TEntity, bool>>? expression = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             CancellationToken cancellationToken = default,
@@ -77,7 +77,7 @@ namespace StoreBT.Repositories
             {
                 query = orderBy(query);
             }
-            return await query.AsNoTracking().ToListAsync(cancellationToken);
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<TEntity?> FindByIdAsync(TKey id, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes)
@@ -112,18 +112,6 @@ namespace StoreBT.Repositories
         {
             _dbSet.Attach(entity);
             _dbSet.Entry(entity).State = EntityState.Modified;
-        }
-
-        public async Task<ICollection<TEntity>> GetAll(Expression<Func<TEntity, bool>>? expression = null, CancellationToken cancellationToken = default)
-        {
-            IQueryable<TEntity> query = _dbSet;
-
-            if (expression != null)
-            {
-                query = query.Where(expression);
-            }
-
-            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<int> SaveChangeAsync()

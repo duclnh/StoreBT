@@ -14,10 +14,6 @@ namespace StoreBT.Services
         {
             _customerRepository = customerRepository;
         }
-        public async Task<IEnumerable<Customer>> GetAllAsync()
-        {
-            return await _customerRepository.GetAll(null, CancellationToken.None);
-        }
 
         public async Task<int> AddAsync(Customer customer)
         {
@@ -37,6 +33,12 @@ namespace StoreBT.Services
         {
             _customerRepository.Remove(customer);
             return await _customerRepository.SaveChangeAsync();
+        }
+
+        public async Task<IEnumerable<Customer>> SearchAsync(string value)
+        {
+            return await _customerRepository.FindAllAsync(x => x.Name.Contains(value) || x.Phone.Contains(value), 
+                x => x.OrderByDescending(x => x.CreatedAt));
         }
     }
 

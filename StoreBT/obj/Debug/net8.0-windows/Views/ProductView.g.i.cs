@@ -256,7 +256,7 @@ namespace StoreBT.Views {
             case 7:
             
             #line 141 "..\..\..\..\Views\ProductView.xaml"
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Delete_Click);
+            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Delete_ClickAsync);
             
             #line default
             #line hidden

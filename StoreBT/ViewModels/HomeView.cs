@@ -37,7 +37,8 @@ namespace StoreBT.Views
         {
             if (Application.Current.MainWindow is MainWindow main)
             {
-                main.MainVM.CurrentView = new ProductView();
+                var customerView = App.Services.GetRequiredService<ProductView>();
+                main.MainVM.CurrentView = customerView;
             }
         }
         private void Customer_Click(object sender, MouseButtonEventArgs e)

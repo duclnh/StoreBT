@@ -9,10 +9,9 @@ namespace StoreBT.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllAsync();
-        Task<Product?> GetByBarcodeAsync(string barcode);
-        Task AddAsync(Product product);
-        Task UpdateAsync(Product product);
-        Task DeleteAsync(string barcode);
+        Task<IEnumerable<Product>> SearchAsync(string value);
+        Task<int> AddAsync(Product product);
+        Task<int> UpdateAsync(Product product);
+        Task<int> DeleteAsync(Product product);
     }
 }

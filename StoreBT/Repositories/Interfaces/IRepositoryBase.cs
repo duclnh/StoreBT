@@ -11,13 +11,13 @@ namespace StoreBT.Repositories.Interfaces
             CancellationToken cancellationToken = default,
             params Expression<Func<TEntity, object>>[] includes
         );
-        Task<IList<TEntity>> FindAll(
+        Task<IList<TEntity>> FindAllAsync(
            Expression<Func<TEntity, bool>>? expression = null,
            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
            CancellationToken cancellationToken = default,
            params Expression<Func<TEntity, object>>[] includes
        );
-        Task<TEntity?> Find(
+        Task<TEntity?> FindAsync(
             Expression<Func<TEntity, bool>> expression,
             CancellationToken cancellationToken = default,
             params Expression<Func<TEntity, object>>[] includes
@@ -35,10 +35,6 @@ namespace StoreBT.Repositories.Interfaces
         void Remove(TEntity entity);
         void RemoveRange(IEnumerable<TEntity> entities);
         void Update(TEntity entity);
-        Task<ICollection<TEntity>> GetAll(
-            Expression<Func<TEntity, bool>>? expression = null,
-            CancellationToken cancellationToken = default
-        );
 
         Task<int> SaveChangeAsync();
     }
