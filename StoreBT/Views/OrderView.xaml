@@ -103,7 +103,7 @@
 
                 <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Giảm giá" Binding="{Binding Discount, StringFormat={}{0:N0} ₫}" Width="120"/>
 
-                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Thành tiền" Binding="{Binding FinalAmount, StringFormat={}{0:N0} ₫}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Thành tiền" Binding="{Binding FinalAmount    , StringFormat={}{0:N0} ₫}" Width="150"/>
                 <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Ghi chú" Binding="{Binding Notes}" Width="*"/>
 
                 <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="150"/>
