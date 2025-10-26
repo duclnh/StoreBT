@@ -33,9 +33,19 @@ namespace StoreBT
 
             services.AddScoped<IProductService, ProductService>();
 
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
+            services.AddScoped<IOrderItemService, OrderItemService>();
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<IOrderService, OrderService>();
+
+            services.AddTransient<OrderView>();
             services.AddTransient<CustomerView>();
             services.AddTransient<ProductView>();
+            services.AddTransient<OrderEditView>();
+
             services.AddTransient<CreateOrderView>();
 
             services.AddTransient<MainWindow>();

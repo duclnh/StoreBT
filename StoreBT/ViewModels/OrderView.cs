@@ -25,10 +25,10 @@ namespace StoreBT.Views
     public partial class OrderView : UserControl
     {
         private readonly IOrderService _orderService;
-        public OrderView()
+        public OrderView(IOrderService orderService)
         {
             InitializeComponent();
-            _orderService = new OrderService();
+            _orderService = orderService;
             this.Loaded += OrderView_Loaded;
         }
         private void Back_Click(object sender, RoutedEventArgs e)
@@ -43,23 +43,44 @@ namespace StoreBT.Views
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
+            var order = button?.DataContext as Order; // lấy Order từ dòng DataGrid
 
+            if (order == null)
+                return;
+
+            if (Application.Current.MainWindow is MainWindow main)
+            {
+                var orderEditView = App.Services.GetRequiredService<OrderEditView>();
+
+                orderEditView.LoadOrder(order.Id);
+
+                main.MainVM.CurrentView = orderEditView;
+            }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private async void Delete_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-         
+            var order = button?.DataContext as Order;
+            if (order != null)
+            {
+                if (MessageBox.Show($"Bạn có chắc muốn xóa '{order.OrderCode}'?", "Xác nhận xóa",
+                                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    var result = await _orderService.DeleteAsync(order);
+                    if (result <= 0)
+                    {
+                        MessageBox.Show("Xóa đơn hàng thất bại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    await LoadOrder();
+                }
+            }
         }
 
-        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private async void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             var keyword = txtSearch.Text.Trim().ToLower();
-
-            //if (ProductGrid.ItemsSource is IEnumerable<Product> products)
-            //{
-
-            //}
+            OrderGrid.ItemsSource = await _orderService.SearchAsync(keyword);
         }
 
         private async void OrderView_Loaded(object sender, RoutedEventArgs e)
@@ -68,9 +89,9 @@ namespace StoreBT.Views
         }
         private async Task LoadOrder()
         {
-
-            OrderGrid.ItemsSource = await _orderService.GetAllAsync();
-        }
+       
+            OrderGrid.ItemsSource = await _orderService.SearchAsync(txtSearch.Text.Trim());
+        } 
 
         private void AddOrder_Click(object sender, RoutedEventArgs e)
         {

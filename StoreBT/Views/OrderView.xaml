@@ -90,23 +90,24 @@
           Margin="20,20,20,0">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mã đơn hàng" Binding="{Binding OrderCode}" Width="170"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Mã đơn hàng" Binding="{Binding OrderCode}" Width="170"/>
 
                 <!-- Hiển thị tên khách hàng -->
-                <DataGridTextColumn Header="Tên Khách hàng" Binding="{Binding CustomerName}" Width="200"/>
+                <!--<DataGridTextColumn Header="Tên Khách hàng" Binding="{Binding CustomerName}" Width="200"/>
                 
                 <DataGridTextColumn Header="Số điện thoại" Binding="{Binding CustomerPhone}" Width="200"/>
 
-                <DataGridTextColumn Header="Ngày đặt" Binding="{Binding OrderDate, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
+                <DataGridTextColumn Header="Ngày đặt" Binding="{Binding OrderDate, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>-->
 
-                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat={}{0:N0} ₫}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat={}{0:N0} ₫}" Width="150"/>
 
-                <DataGridTextColumn Header="Giảm giá" Binding="{Binding Discount, StringFormat={}{0:N0} ₫}" Width="120"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Giảm giá" Binding="{Binding Discount, StringFormat={}{0:N0} ₫}" Width="120"/>
 
-                <DataGridTextColumn Header="Thành tiền" Binding="{Binding FinalAmount, StringFormat={}{0:N0} ₫}" Width="150"/>
-                <DataGridTextColumn Header="Ghi chú" Binding="{Binding Note}" Width="*"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Thành tiền" Binding="{Binding FinalAmount, StringFormat={}{0:N0} ₫}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Ghi chú" Binding="{Binding Notes}" Width="*"/>
 
-                <DataGridTextColumn Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Ngày cập nhật" Binding="{Binding UpdatedAt, StringFormat={}{0:dd/MM/yyyy HH:mm:ss}}" Width="150"/>
 
                 <!-- 🧩 Cột Thao tác -->
                 <DataGridTemplateColumn Header="Thao tác" Width="100">

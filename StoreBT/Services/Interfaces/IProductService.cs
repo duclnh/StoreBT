@@ -13,5 +13,6 @@ namespace StoreBT.Services.Interfaces
         Task<int> AddAsync(Product product);
         Task<int> UpdateAsync(Product product);
         Task<int> DeleteAsync(Product product);
+        Task<Product?> GetProductByBarCode(string barcode);
     }
 }

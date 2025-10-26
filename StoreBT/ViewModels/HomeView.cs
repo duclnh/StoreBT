@@ -54,7 +54,8 @@ namespace StoreBT.Views
         {
             if (Application.Current.MainWindow is MainWindow main)
             {
-                main.MainVM.CurrentView = new OrderView();
+                var customerView = App.Services.GetRequiredService<OrderView>();
+                main.MainVM.CurrentView = customerView;
             }
         }
 

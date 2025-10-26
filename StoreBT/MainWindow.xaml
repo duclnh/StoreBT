@@ -40,7 +40,33 @@
                                 Click="Max_Click"/>
                         <Button Content="✕" Width="40" Background="Transparent" Foreground="White"
                                 FontSize="16" BorderBrush="{x:Null}" Cursor="Hand"
-                                Click="Close_Click"/>
+                                Click="Close_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="border"
+                                        CornerRadius="0,15,0,0"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <!-- Hover -->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="#BEE6FD"/>
+                                            <!-- đỏ nhạt -->
+                                        </Trigger>
+                                        <!-- Nhấn -->
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="#BEE6FD"/>
+                                            <!-- đỏ đậm -->
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+
+                        </Button>
                     </StackPanel>
                 </DockPanel>
             </Border>

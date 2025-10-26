@@ -21,5 +21,6 @@ namespace StoreBT.Models
         public string? Description { get; set; }             // Mô tả thêm
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace StoreBT.Repositories.Interfaces
             CancellationToken cancellationToken = default,
             params Expression<Func<TEntity, object>>[] includes
         );
-        Task<IList<TEntity>> FindAllAsync(
+       Task<IList<TEntity>> FindAllAsync(
            Expression<Func<TEntity, bool>>? expression = null,
            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
            CancellationToken cancellationToken = default,

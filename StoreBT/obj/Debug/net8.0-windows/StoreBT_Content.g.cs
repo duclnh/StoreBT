@@ -12,5 +12,6 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/icons/delete.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/icons/scan.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/icons/search.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("seller.ico")]
 
 

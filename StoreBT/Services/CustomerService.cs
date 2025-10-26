@@ -31,13 +31,14 @@ namespace StoreBT.Services
 
         public async Task<int> DeleteAsync(Customer customer)
         {
-            _customerRepository.Remove(customer);
+            customer.IsDeleted = true;
+            _customerRepository.Update(customer);
             return await _customerRepository.SaveChangeAsync();
         }
 
         public async Task<IEnumerable<Customer>> SearchAsync(string value)
         {
-            return await _customerRepository.FindAllAsync(x => x.Name.Contains(value) || x.Phone.Contains(value), 
+            return await _customerRepository.FindAllAsync(x => !x.IsDeleted && x.Name.Contains(value) || x.Phone.Contains(value), 
                 x => x.OrderByDescending(x => x.CreatedAt));
         }
     }

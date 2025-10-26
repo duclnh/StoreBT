@@ -1,49 +1,110 @@
 ﻿using StoreBT.Models;
+using StoreBT.Repositories.Interfaces;
 using StoreBT.Services.Interfaces;
 
 namespace StoreBT.Services
 {
     public class OrderItemService : IOrderItemService
     {
-        private readonly List<OrderItem> _items = new List<OrderItem>();
+        private readonly IOrderItemRepository _orderItemRepository;
+        private readonly IProductRepository _productRepository;
 
-        public async Task<IEnumerable<OrderItem>> GetAllAsync()
+        public OrderItemService(IOrderItemRepository orderItemRepository, IProductRepository productRepository)
         {
-            return await Task.FromResult(_items);
+            _orderItemRepository = orderItemRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<IEnumerable<OrderItem>> GetByOrderIdAsync(Guid orderId)
         {
-            var items = _items.Where(i => i.OrderId == orderId);
-            return await Task.FromResult(items);
-        }
-
-        public async Task AddAsync(OrderItem item)
-        {
-            _items.Add(item);
-            await Task.CompletedTask;
-        }
-
-        public async Task UpdateAsync(OrderItem item)
-        {
-            var existing = _items.FirstOrDefault(i => i.Id == item.Id);
-            if (existing != null)
+            var items = await _orderItemRepository.GetAllAsync(orderId);
+            foreach (var item in items)
             {
-                existing.ProductId = item.ProductId;
-                existing.Quantity = item.Quantity;
-                existing.UnitPrice = item.UnitPrice;
-                existing.UpdatedAt = DateTime.Now;
+                item.Product = await _productRepository.FindByIdAsync(item.ProductId);
             }
-            await Task.CompletedTask;
+            return items;
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task AddRangeAsync(List<OrderItem> items)
         {
-            var item = _items.FirstOrDefault(i => i.Id == id);
-            if (item != null)
-                _items.Remove(item);
+            if (items == null || !items.Any())
+                return;
 
-            await Task.CompletedTask;
+            var orderId = items.First().OrderId;
+
+            var existingItems = await _orderItemRepository
+                .FindAllAsync(x => !x.IsDeleted && x.OrderId == orderId);
+
+            var productIds = items.Select(x => x.ProductId)
+                                  .Concat(existingItems.Select(x => x.ProductId))
+                                  .Distinct()
+                                  .ToList();
+
+            var products = await _productRepository.FindAllAsync(x => productIds.Contains(x.Id));
+
+            foreach (var item in items)
+            {
+                var existingItem = existingItems.FirstOrDefault(x => x.Id == item.Id);
+                var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+
+                if (existingItem != null)
+                {
+                    if (product != null)
+                    {
+                        var diff = item.Quantity - existingItem.Quantity;
+                        product.Stock -= diff;
+                        product.UpdatedAt = DateTime.Now;
+                        _productRepository.Update(product);
+                    }
+                    existingItem.Quantity = item.Quantity;
+                    existingItem.UpdatedAt = DateTime.Now;
+                    _orderItemRepository.Update(existingItem);
+                }
+                else
+                {
+
+                    await _orderItemRepository.AddAsync(item);
+
+
+                    if (product != null)
+                    {
+                        product.Stock -= item.Quantity;
+                        product.UpdatedAt = DateTime.Now;
+                        _productRepository.Update(product);
+                    }
+                }
+            }
+
+            var newItemIds = items.Select(x => x.Id).ToList();
+            var itemsToDelete = existingItems
+                .Where(x => !newItemIds.Contains(x.Id))
+                .ToList();
+
+            foreach (var item in itemsToDelete)
+            {
+                var existingItem = existingItems.FirstOrDefault(x => x.Id == item.Id);
+                if (existingItem is not null)
+                {
+                    existingItem.IsDeleted = true;
+                    existingItem.UpdatedAt = DateTime.Now;
+                    _orderItemRepository.Update(item);
+                }
+                var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+                if (product != null)
+                {
+                    product.Stock += item.Quantity;
+                    product.UpdatedAt = DateTime.Now;
+                    _productRepository.Update(product);
+                }
+            }
+
+
+            await _orderItemRepository.SaveChangeAsync();
+        }
+
+        public Task<bool> AnyAsync(Guid productId)
+        {
+            return _orderItemRepository.AnyAsync(x => !x.IsDeleted && x.ProductId == productId);
         }
     }
 }

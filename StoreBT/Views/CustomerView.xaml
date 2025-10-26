@@ -91,10 +91,10 @@
           Margin="20,20,20,0">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding Name}" Width="120"/>
-                <DataGridTextColumn Header="Số điện thoại" Binding="{Binding Phone}" Width="150"/>
-                <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" Width="2*"/>
-                <DataGridTextColumn Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Tên khách hàng" Binding="{Binding Name}" Width="120"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Số điện thoại" Binding="{Binding Phone}" Width="150"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Địa chỉ" Binding="{Binding Address}" Width="2*"/>
+                <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Ngày tạo" Binding="{Binding CreatedAt, StringFormat={}{0:dd/MM/yyyy}}" Width="150"/>
 
                 <!-- 🧩 Cột Thao tác -->
                 <DataGridTemplateColumn Header="Thao tác" Width="100">

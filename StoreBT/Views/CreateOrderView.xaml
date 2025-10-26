@@ -93,14 +93,14 @@
                         Height="28"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Margin="0,0,2,0"
+                        Margin="0,0,6,0"
                         Background="Transparent"
                         BorderBrush="{x:Null}"
                         Cursor="Hand"
                         ToolTip="Quét mã vạch"
                         Click="btnScanBarcode_Click">
                                 <Image Source="/Assets/Icons/scan.png"
-                                Width="36"
+                                Width="40"
                                 Height="auto"
                                 Stretch="Fill"
                                 VerticalAlignment="Center"
@@ -127,11 +127,11 @@
                               MouseDoubleClick="ProductGrid_MouseDoubleClick">   
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mã vạch" Binding="{Binding Barcode}" Width="120"/>
-                            <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding Name}" Width="1*"/>
-                            <DataGridTextColumn Header="Loại" Binding="{Binding Category}" Width="150"/>
-                            <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat={}{0:N0} ₫}" Width="120"/>
-                            <DataGridTextColumn Header="Tồn kho" Binding="{Binding Stock}" Width="100"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Mã vạch" Binding="{Binding Barcode}" Width="120"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Tên sản phẩm" Binding="{Binding Name}" Width="1*"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Loại" Binding="{Binding Category}" Width="150"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Giá bán" Binding="{Binding Price, StringFormat={}{0:N0} ₫}" Width="120"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Tồn kho" Binding="{Binding Stock}" Width="100"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -142,10 +142,10 @@
         BorderBrush="#E2E8F0" BorderThickness="1">
                 <StackPanel>
 
-                    <!-- 🧍 Thông tin khách hàng -->
+                    <!-- 🧍 Thông tin khách hàng --><!--
                     <TextBlock Text="👤 Thông tin khách hàng" FontWeight="Bold" FontSize="16"/>
 
-                    <!-- Chọn khách hàng có sẵn -->
+                    --><!-- Chọn khách hàng có sẵn --><!--
                     <Border CornerRadius="8" BorderBrush="#CCC" BorderThickness="1" Padding="2" Panel.ZIndex="3">
                         <ComboBox x:Name="CustomerComboBox"
                           DisplayMemberPath="Name"
@@ -161,7 +161,7 @@
                           Padding="5"/>
                     </Border>
 
-                    <!-- Nhập khách hàng mới -->
+                    --><!-- Nhập khách hàng mới --><!--
                     <StackPanel x:Name="NewCustomerPanel" Margin="0,5,0,0">
                         <StackPanel Margin="0,5">
                             <TextBlock Text="Tên khách hàng" FontWeight="SemiBold" Foreground="#1E3A8A" Margin="0,0,0,4"/>
@@ -178,7 +178,7 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <Separator Margin="0,10,0,10"/>
+                    <Separator Margin="0,10,0,10"/>-->
 
                     <!-- 🧺 Danh sách sản phẩm chọn -->
                     <TextBlock Text="🧺 Sản phẩm đã chọn:" FontWeight="Bold" FontSize="16"/>
@@ -189,7 +189,8 @@
                   AlternatingRowBackground="#F9FAFB"
                   HeadersVisibility="Column"
                   FontSize="14"
-                  Height="180">
+                  Height="180"
+                  CellEditEnding="MyGrid_CellEditEnding">
                         <DataGrid.Resources>
                             <!-- 🧩 Style bỏ màu nền khi chọn -->
                             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
@@ -197,10 +198,10 @@
                             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding Product.Name}" Width="2*" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Giá" Binding="{Binding UnitPrice, StringFormat={}{0:N0} ₫}" Width="100" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="SL" Binding="{Binding Quantity}" Width="60"/>
-                            <DataGridTextColumn Header="Thành tiền" Binding="{Binding Total, StringFormat={}{0:N0} ₫}" Width="90" IsReadOnly="True"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Tên sản phẩm" Binding="{Binding Product.Name}" Width="2*" IsReadOnly="True"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Giá" Binding="{Binding UnitPrice, StringFormat={}{0:N0} ₫}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="SL" Binding="{Binding Quantity}" Width="60"/>
+                            <DataGridTextColumn ElementStyle="{StaticResource CenterTextCell}" Header="Thành tiền" Binding="{Binding Total, StringFormat={}{0:N0} ₫}" Width="90" IsReadOnly="True"/>
                             <!-- 🧩 Cột Thao tác -->
                             <DataGridTemplateColumn Header="Thao tác" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -228,7 +229,7 @@
 
                     <!-- Ghi chú -->
                     <TextBlock Text="Ghi chú" FontWeight="Bold" FontSize="14"/>
-                    <TextBox x:Name="Note"
+                    <TextBox x:Name="txtNote"
                       Height="32"
                       Padding="8"
                       BorderBrush="#CBD5E1"

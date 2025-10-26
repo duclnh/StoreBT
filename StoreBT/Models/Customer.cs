@@ -13,6 +13,7 @@ namespace StoreBT.Models
         public string Address { get; set; }        // Địa chỉ
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
 }

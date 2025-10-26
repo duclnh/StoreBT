@@ -20,6 +20,7 @@ namespace StoreBT.Models
         public decimal Total => UnitPrice * Quantity;           // Thành tiền của dòng sản phẩm
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
 }

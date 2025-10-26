@@ -95,7 +95,7 @@ namespace StoreBT.Repositories
             query = query.Where(e => EF.Property<TKey>(e, "Id")!.Equals(id));
 
 
-            return await query.AsNoTracking().FirstOrDefaultAsync(cancellationToken);
+            return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
         public void Remove(TEntity entity)

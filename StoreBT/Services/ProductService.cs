@@ -20,8 +20,8 @@ namespace StoreBT.Services
 
         public async Task<IEnumerable<Product>> SearchAsync(string value)
         {
-            return await _productRepository.FindAllAsync(x => x.Barcode.Contains(value) || x.Name.Contains(value)
-                                                        || x.Category.Contains(value), x => x.OrderByDescending(x => x.CreatedAt));
+            return await _productRepository.FindAllAsync(x => !x.IsDeleted && (x.Barcode.Contains(value) || x.Name.Contains(value)
+                                                        || x.Category.Contains(value)), x => x.OrderByDescending(x => x.CreatedAt));
         }
         public async Task<int> AddAsync(Product product)
         {
@@ -39,10 +39,15 @@ namespace StoreBT.Services
 
         public async Task<int> DeleteAsync(Product product)
         {
-
-            _productRepository.Remove(product);
+            product.IsDeleted = true;
+            _productRepository.Update(product);
 
             return await _productRepository.SaveChangeAsync();
+        }
+
+        public async Task<Product?> GetProductByBarCode(string barcode)
+        {
+            return await _productRepository.FindAsync(x => !x.IsDeleted && x.Barcode == barcode);
         }
     }
 }
